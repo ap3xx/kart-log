@@ -1,10 +1,9 @@
-package com.ap3x.kartlog.processor;
+package com.ap3x.kartlog.service.impl;
 
-import com.ap3x.kartlog.model.LogRow;
+import com.ap3x.kartlog.model.LapLog;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.List;
@@ -14,21 +13,21 @@ import static com.ap3x.kartlog.config.LogConfig.configLog;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-public class LogProcessorTest {
+public class LapParserImplTest {
 
-    private LogProcessor processor;
+    private LapParserImpl processor;
 
     @Before
     public void setUp() {
         configLog();
-        processor = new LogProcessor();
+        processor = new LapParserImpl();
     }
 
     @Test
     public void processLogFile(){
         final String logFile = Objects.requireNonNull(
                 getClass().getClassLoader().getResource("test_pass.log")).getPath();
-        List<LogRow> rows = processor.processLogFile(logFile);
+        List rows = processor.processLogFile(logFile);
 
         assertEquals(23, rows.size());
     }
@@ -37,14 +36,14 @@ public class LogProcessorTest {
     public void processLogFile_badLines(){
         final String logFile = Objects.requireNonNull(
                 getClass().getClassLoader().getResource("test_bad_lines.log")).getPath();
-        List<LogRow> rows = processor.processLogFile(logFile);
+        List rows = processor.processLogFile(logFile);
 
         assertEquals(19, rows.size());
     }
 
     @Test
     public void processLogFile_noFile() {
-        List<LogRow> rows = processor.processLogFile("this_does_not_exist.log");
+        List rows = processor.processLogFile("this_does_not_exist.log");
 
         assertNull(rows);
     }
@@ -52,71 +51,71 @@ public class LogProcessorTest {
     @Test
     public void parseLogRow() {
         final String rawLogRow = "23:49:08.277      038 – F.MASSA                1\t\t1:02.852                        44,275";
-        final LogRow logRow = processor.parseLogRow(rawLogRow);
+        final LapLog lapLog = processor.parseLogRow(rawLogRow);
 
-        assertEquals(LocalTime.parse("23:49:08.277"), logRow.getLogTime());
-        assertEquals(38, logRow.getPilotCode().intValue());
-        assertEquals("F.MASSA", logRow.getPilotName());
-        assertEquals(1, logRow.getLapNumber().intValue());
-        assertEquals(62852L, logRow.getLapTime().toMillis());
-        assertEquals(44.275, logRow.getLapSpeed(), 1);
+        assertEquals(LocalTime.parse("23:49:08.277"), lapLog.getLogTime());
+        assertEquals(38, lapLog.getPilotCode().intValue());
+        assertEquals("F.MASSA", lapLog.getPilotName());
+        assertEquals(1, lapLog.getLapNumber().intValue());
+        assertEquals(62852L, lapLog.getLapTime().toMillis());
+        assertEquals(44.275, lapLog.getLapSpeed(), 1);
     }
 
     @Test
     public void parseLogRow_badPilotCode() {
         final String rawLogRow = "23:49:08.277      0A8 – F.MASSA                1\t\t1:02.852                        44,275";
-        final LogRow logRow = processor.parseLogRow(rawLogRow);
+        final LapLog lapLog = processor.parseLogRow(rawLogRow);
 
-        assertEquals("FMTERR", logRow.getPilotName());
+        assertEquals("FMTERR", lapLog.getPilotName());
     }
 
     @Test
     public void parseLogRow_badLapSpeed() {
         final String rawLogRow = "23:49:08.277      038 – F.MASSA                1\t\t1:02.852                        44,A75";
-        final LogRow logRow = processor.parseLogRow(rawLogRow);
+        final LapLog lapLog = processor.parseLogRow(rawLogRow);
 
-        assertEquals("FMTERR", logRow.getPilotName());
+        assertEquals("FMTERR", lapLog.getPilotName());
     }
 
     @Test
     public void parseLogRow_badLapNumber() {
         final String rawLogRow = "23:49:08.277      038 – F.MASSA                B\t\t1:02.852                        44,275";
-        final LogRow logRow = processor.parseLogRow(rawLogRow);
+        final LapLog lapLog = processor.parseLogRow(rawLogRow);
 
-        assertEquals("FMTERR", logRow.getPilotName());
+        assertEquals("FMTERR", lapLog.getPilotName());
     }
 
     @Test
     public void parseLogRow_badLapTime() {
         String rawLogRow = "23:49:08.277      038 – F.MASSA                1\t\tA:02.852                        44,275";
-        LogRow logRow = processor.parseLogRow(rawLogRow);
-        assertEquals("FMTERR", logRow.getPilotName());
+        LapLog lapLog = processor.parseLogRow(rawLogRow);
+        assertEquals("FMTERR", lapLog.getPilotName());
 
         rawLogRow = "23:49:08.277      038 – F.MASSA                1\t\t1:AB.852                        44,275";
-        logRow = processor.parseLogRow(rawLogRow);
-        assertEquals("FMTERR", logRow.getPilotName());
+        lapLog = processor.parseLogRow(rawLogRow);
+        assertEquals("FMTERR", lapLog.getPilotName());
 
         rawLogRow = "23:49:08.277      038 – F.MASSA                1\t\t1:02.ABC                        44,275";
-        logRow = processor.parseLogRow(rawLogRow);
-        assertEquals("FMTERR", logRow.getPilotName());
+        lapLog = processor.parseLogRow(rawLogRow);
+        assertEquals("FMTERR", lapLog.getPilotName());
     }
 
     @Test
     public void parseLogRow_badLogTime() {
         String rawLogRow = "2019-12-30T23:49:08.277      038 – F.MASSA                1\t\t1:02.852             44,275";
-        LogRow logRow = processor.parseLogRow(rawLogRow);
-        assertEquals("FMTERR", logRow.getPilotName());
+        LapLog lapLog = processor.parseLogRow(rawLogRow);
+        assertEquals("FMTERR", lapLog.getPilotName());
 
         rawLogRow = "A23:49:08      038 – F.MASSA                1\t\t1:02.852                        44,275";
-        logRow = processor.parseLogRow(rawLogRow);
-        assertEquals("FMTERR", logRow.getPilotName());
+        lapLog = processor.parseLogRow(rawLogRow);
+        assertEquals("FMTERR", lapLog.getPilotName());
     }
 
     @Test
     public void parseLogRow_shortLine() {
         String rawLogRow = "23:49:08.277      038 – F.MASSA";
-        LogRow logRow = processor.parseLogRow(rawLogRow);
-        assertEquals("FMTERR", logRow.getPilotName());
+        LapLog lapLog = processor.parseLogRow(rawLogRow);
+        assertEquals("FMTERR", lapLog.getPilotName());
     }
 
     @Test

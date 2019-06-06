@@ -1,6 +1,7 @@
-package com.ap3x.kartlog.processor;
+package com.ap3x.kartlog.service.impl;
 
-import com.ap3x.kartlog.model.LogRow;
+import com.ap3x.kartlog.model.LapLog;
+import com.ap3x.kartlog.service.LapParser;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -14,11 +15,12 @@ import java.util.stream.Collectors;
 
 import static com.ap3x.kartlog.KartLogConstants.DELIMITER;
 
-public class LogProcessor {
+public class LapParserImpl implements LapParser {
 
-    private static final Logger LOGGER = Logger.getLogger(LogProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(LapParserImpl.class.getName());
 
-    public List<LogRow> processLogFile(final String logFilePath) {
+    @Override
+    public List<LapLog> processLogFile(final String logFilePath) {
         LOGGER.info("Reading " + logFilePath);
         try (BufferedReader reader = new BufferedReader(new FileReader(logFilePath))) {
             return reader.lines().skip(1).map(this::parseLogRow)
@@ -30,11 +32,11 @@ public class LogProcessor {
         }
     }
 
-    LogRow parseLogRow(final String rawRow) {
+    LapLog parseLogRow(final String rawRow) {
         LOGGER.fine("Parsing row: " + rawRow);
         try {
             final String[] splitRow = rawRow.split(DELIMITER);
-            return new LogRow(
+            return new LapLog(
                     LocalTime.parse(splitRow[0]),
                     Integer.parseInt(splitRow[1]),
                     splitRow[3],
@@ -45,7 +47,7 @@ public class LogProcessor {
         } catch (NumberFormatException | DateTimeParseException | IndexOutOfBoundsException e) {
             LOGGER.severe("Formatting exception: " + e.getMessage());
             LOGGER.severe("Record: " + rawRow);
-            return new LogRow("FMTERR");
+            return new LapLog("FMTERR");
         }
     }
 

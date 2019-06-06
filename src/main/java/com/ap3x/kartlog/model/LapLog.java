@@ -4,7 +4,7 @@ import java.time.Duration;
 import java.time.LocalTime;
 import java.util.Objects;
 
-public class LogRow {
+public class LapLog {
 
     private LocalTime logTime;
     private Integer pilotCode;
@@ -13,14 +13,14 @@ public class LogRow {
     private Duration lapTime;
     private Float lapSpeed;
 
-    public LogRow() {
+    public LapLog() {
     }
 
-    public LogRow(String pilotName) {
+    public LapLog(String pilotName) {
         this.pilotName = pilotName;
     }
 
-    public LogRow(LocalTime logTime, Integer pilotCode, String pilotName, Integer lapNumber, Duration lapTime, Float lapSpeed) {
+    public LapLog(LocalTime logTime, Integer pilotCode, String pilotName, Integer lapNumber, Duration lapTime, Float lapSpeed) {
         this.logTime = logTime;
         this.pilotCode = pilotCode;
         this.pilotName = pilotName;
@@ -81,22 +81,17 @@ public class LogRow {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        LogRow logRow = (LogRow) o;
-        return Objects.equals(logTime, logRow.logTime) &&
-                Objects.equals(pilotCode, logRow.pilotCode) &&
-                Objects.equals(pilotName, logRow.pilotName) &&
-                Objects.equals(lapNumber, logRow.lapNumber) &&
-                Objects.equals(lapTime, logRow.lapTime) &&
-                Objects.equals(lapSpeed, logRow.lapSpeed);
+        LapLog lapLog = (LapLog) o;
+        return Objects.equals(logTime, lapLog.logTime) &&
+                Objects.equals(pilotCode, lapLog.pilotCode) &&
+                Objects.equals(pilotName, lapLog.pilotName) &&
+                Objects.equals(lapNumber, lapLog.lapNumber) &&
+                Objects.equals(lapTime, lapLog.lapTime) &&
+                Objects.equals(lapSpeed, lapLog.lapSpeed);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(logTime, pilotCode, pilotName, lapNumber, lapTime, lapSpeed);
-    }
-
-    @Override
-    public String toString() {
-        return this.logTime + "|" + this.pilotName + "|" + this.lapNumber;
     }
 }
