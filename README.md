@@ -2,7 +2,7 @@
 
 ## Descrição
 
-Este projeto é o desafio para o processo seletivo da Gympass. O problema, resultados esperados e bônus estão todos descritos [aqui](doc/ASSIGNMENT_DESCRIPTION.md)
+Este projeto é o desafio para o processo seletivo da Gympass. O problema, resultados esperados e bônus estão todos descritos [aqui](doc/ASSIGNMENT_DESCRIPTION.md).
 
 ## Pré-requisitos
 
@@ -51,4 +51,4 @@ Para os testes, deixei o acesso aos métodos `protected` para poder entregar uma
 
 ## Autor
 
-* **Flávio Teixeira** - (ap3xx)[https://github.com/ap3xx]
+* **Flávio Teixeira** - [ap3xx](https://github.com/ap3xx)
