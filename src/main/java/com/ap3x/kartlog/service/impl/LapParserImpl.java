@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -25,6 +26,7 @@ public class LapParserImpl implements LapParser {
         try (BufferedReader reader = new BufferedReader(new FileReader(logFilePath))) {
             return reader.lines().skip(1).map(this::parseLogRow)
                     .filter(l -> !l.getPilotName().equals("FMTERR"))
+                    .sorted(Comparator.comparing(LapLog::getLogTime))
                     .collect(Collectors.toList());
         } catch (IOException e) {
             LOGGER.severe(e.getMessage());

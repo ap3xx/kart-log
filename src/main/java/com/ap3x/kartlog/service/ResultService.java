@@ -7,5 +7,7 @@ import java.util.List;
 
 public interface ResultService {
 
-    List<RacerResult> getRaceResult(List<LapLog> lapLogs);
+    List<RacerResult> getRaceFinalGrid(List<LapLog> lapLogs);
+
+    List<LapLog> getBestLaps(List<LapLog> logs);
 }

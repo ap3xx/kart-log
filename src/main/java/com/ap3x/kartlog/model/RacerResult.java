@@ -1,5 +1,6 @@
 package com.ap3x.kartlog.model;
 
+import java.time.Duration;
 import java.util.Objects;
 
 public class RacerResult {
@@ -8,12 +9,26 @@ public class RacerResult {
     private String pilotName;
     private Long raceTotalTime;
     private Integer lastCompleteLap;
+    private Float lapSpeedSum;
+    private Duration timeAfterFirstRacer;
+
+    public RacerResult() {
+    }
+
+    public RacerResult(Integer pilotCode, String pilotName, Long raceTotalTime, Integer lastCompleteLap, Float lapSpeedSum) {
+        this.pilotCode = pilotCode;
+        this.pilotName = pilotName;
+        this.raceTotalTime = raceTotalTime;
+        this.lastCompleteLap = lastCompleteLap;
+        this.lapSpeedSum = lapSpeedSum;
+        this.timeAfterFirstRacer = null;
+    }
 
     public Integer getPilotCode() {
         return pilotCode;
     }
 
-    public void setPilotCode(Integer pilotCode) {
+    public void setPilotCode(final Integer pilotCode) {
         this.pilotCode = pilotCode;
     }
 
@@ -21,7 +36,7 @@ public class RacerResult {
         return pilotName;
     }
 
-    public void setPilotName(String pilotName) {
+    public void setPilotName(final String pilotName) {
         this.pilotName = pilotName;
     }
 
@@ -29,7 +44,7 @@ public class RacerResult {
         return raceTotalTime;
     }
 
-    public void setRaceTotalTime(Long raceTotalTime) {
+    public void setRaceTotalTime(final Long raceTotalTime) {
         this.raceTotalTime = raceTotalTime;
     }
 
@@ -37,8 +52,24 @@ public class RacerResult {
         return lastCompleteLap;
     }
 
-    public void setLastCompleteLap(Integer lastCompleteLap) {
+    public void setLastCompleteLap(final Integer lastCompleteLap) {
         this.lastCompleteLap = lastCompleteLap;
+    }
+
+    public Float getLapSpeedSum() {
+        return lapSpeedSum;
+    }
+
+    public void setLapSpeedSum(final Float lapSpeedSum) {
+        this.lapSpeedSum = lapSpeedSum;
+    }
+
+    public Duration getTimeAfterFirstRacer() {
+        return timeAfterFirstRacer;
+    }
+
+    public void setTimeAfterFirstRacer(final Duration timeAfterFirstRacer) {
+        this.timeAfterFirstRacer = timeAfterFirstRacer;
     }
 
     public String getPilot() {
@@ -46,7 +77,7 @@ public class RacerResult {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RacerResult result = (RacerResult) o;

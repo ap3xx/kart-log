@@ -33,7 +33,7 @@ public class LapLog {
         return logTime;
     }
 
-    public void setLogTime(LocalTime logTime) {
+    public void setLogTime(final LocalTime logTime) {
         this.logTime = logTime;
     }
 
@@ -41,7 +41,7 @@ public class LapLog {
         return pilotCode;
     }
 
-    public void setPilotCode(Integer pilotCode) {
+    public void setPilotCode(final Integer pilotCode) {
         this.pilotCode = pilotCode;
     }
 
@@ -49,7 +49,7 @@ public class LapLog {
         return pilotName;
     }
 
-    public void setPilotName(String pilotName) {
+    public void setPilotName(final String pilotName) {
         this.pilotName = pilotName;
     }
 
@@ -57,7 +57,7 @@ public class LapLog {
         return lapNumber;
     }
 
-    public void setLapNumber(Integer lapNumber) {
+    public void setLapNumber(final Integer lapNumber) {
         this.lapNumber = lapNumber;
     }
 
@@ -65,7 +65,7 @@ public class LapLog {
         return lapTime;
     }
 
-    public void setLapTime(Duration lapTime) {
+    public void setLapTime(final Duration lapTime) {
         this.lapTime = lapTime;
     }
 
@@ -73,12 +73,16 @@ public class LapLog {
         return lapSpeed;
     }
 
-    public void setLapSpeed(Float lapSpeed) {
+    public void setLapSpeed(final Float lapSpeed) {
         this.lapSpeed = lapSpeed;
     }
 
+    public String getPilot() {
+        return this.pilotCode + " - " + this.pilotName;
+    }
+
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         LapLog lapLog = (LapLog) o;

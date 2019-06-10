@@ -12,7 +12,6 @@ import com.ap3x.kartlog.service.impl.ResultServiceImpl;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Logger;
 
 public class Main {
@@ -32,11 +31,12 @@ public class Main {
         PrintService printer = new PrintServiceImpl();
 
         List<LapLog> logs = parser.processLogFile(args[0]);
-        logs.sort(Comparator.comparing(LapLog::getLogTime));
-        List<RacerResult> grid = service.getRaceResult(logs);
+
+        List<RacerResult> grid = service.getRaceFinalGrid(logs);
         printer.printGrid(grid);
 
-
+        List<LapLog> bestLaps = service.getBestLaps(logs);
+        printer.printBestLaps(bestLaps);
 
         LOGGER.info("Finished processing Kart Race logs");
     }
